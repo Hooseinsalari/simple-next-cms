@@ -5,7 +5,7 @@ import { isValidObjectId } from "mongoose";
 export default async function handler(req, res) {
   connectToDB();
 
-  const { method, query } = req;
+  const { method, query, body } = req;
   const { id } = query;
 
   if (method === "DELETE") {
@@ -19,6 +19,18 @@ export default async function handler(req, res) {
       }
     } else {
       return res.status(422).json({ message: "Course id is not valid !" });
+    }
+  } else if (method === "PUT") {
+    if (isValidObjectId(id)) {
+      try {
+        await coursesModel.findOneAndUpdate({ _id: id }, { title: body.title });
+
+        return res.json({ message: "item successfully updated" });
+      } catch (error) {
+        return res.status(500).json({ message: "Internal server error !" });
+      }
+    } else {
+      return res.status(422).json({ message: "Id is not valid" });
     }
   }
 }

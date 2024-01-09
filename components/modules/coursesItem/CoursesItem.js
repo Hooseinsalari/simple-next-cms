@@ -20,6 +20,23 @@ const CoursesItem = ({ title, image, id }) => {
     }
   };
 
+  const updateHandler = async (e, newCoursesDetail) => {
+    e.preventDefault();
+    console.log(newCoursesDetail);
+    const res = await fetch(`http://localhost:3000/api/courses/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newCoursesDetail),
+    });
+
+    if (res.status === 200) {
+      alert("Product successfully update");
+      setShowEditModal(false);
+    }
+  };
+
   return (
     <>
       <li className={styles.courses_item}>
@@ -50,7 +67,9 @@ const CoursesItem = ({ title, image, id }) => {
           </a>
         </div>
       </li>
-      {showEditModal && <EditModal hideEditModal={hideEditModal} />}
+      {showEditModal && (
+        <EditModal hideEditModal={hideEditModal} onUpdate={updateHandler} />
+      )}
       {showDeleteModal && (
         <DeleteModal
           hideDeleteModal={hideDeleteModal}
