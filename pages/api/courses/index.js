@@ -20,7 +20,6 @@ export default async function handler(req, res) {
         .status(201)
         .json({ message: "New course create successfully!" });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         message: "Unknown internal server error",
       });
