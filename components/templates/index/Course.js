@@ -4,9 +4,19 @@ import AddCourseModal from "./AddCourseModal";
 import styles from "@/styles/Course.module.css";
 
 const Course = ({ coursesList }) => {
+  const [data, setData] = useState([...coursesList]);
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
 
   const hideAddCourseModal = () => setShowAddCourseModal(false);
+
+  const getCourses = async () => {
+    const res = await fetch("/api/courses");
+    const coursesData = await res.json();
+
+    if (res.status === 200) {
+      setData(coursesData);
+    }
+  };
 
   return (
     <>
@@ -22,19 +32,23 @@ const Course = ({ coursesList }) => {
           </a>
         </div>
         <ul className={styles.courses_list}>
-          {coursesList.map((item) => (
+          {data.map((item) => (
             <CoursesItem
               key={item._id}
               title={item.title}
               image="/images/courses/PWA.jpg"
               id={item._id}
+              getCourses={getCourses}
             />
           ))}
         </ul>
       </section>
 
       {showAddCourseModal && (
-        <AddCourseModal hideAddCourseModal={hideAddCourseModal} />
+        <AddCourseModal
+          getCourses={getCourses}
+          hideAddCourseModal={hideAddCourseModal}
+        />
       )}
     </>
   );

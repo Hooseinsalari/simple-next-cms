@@ -11,7 +11,7 @@ import {
 import styles from "@/styles/Modal.module.css";
 import { useState } from "react";
 
-const AddCourseModal = ({ hideAddCourseModal }) => {
+const AddCourseModal = ({ hideAddCourseModal, getCourses }) => {
   const [coursesDetail, setCoursesDetail] = useState({
     title: "",
   });
@@ -33,6 +33,7 @@ const AddCourseModal = ({ hideAddCourseModal }) => {
       });
 
       alert(res.statusText);
+      getCourses()
     }
   };
 

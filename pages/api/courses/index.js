@@ -6,7 +6,13 @@ export default async function handler(req, res) {
 
   const { method } = req;
 
-  if (method === "POST") {
+  if (method === "GET") {
+    const courses = await coursesModel.find({});
+
+    if (courses) {
+      return res.status(200).json(courses);
+    }
+  } else if (method === "POST") {
     try {
       const { title } = req.body;
 
@@ -25,6 +31,4 @@ export default async function handler(req, res) {
       });
     }
   }
-
-  return res.json({ message: "courses api" });
 }

@@ -2,7 +2,7 @@ import DeleteModal from "@/components/templates/index/DeleteModal";
 import EditModal from "@/components/templates/index/EditModal";
 import { useState } from "react";
 import styles from "@/styles/Course.module.css";
-const CoursesItem = ({ title, image, id }) => {
+const CoursesItem = ({ title, image, id, getCourses }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -17,12 +17,13 @@ const CoursesItem = ({ title, image, id }) => {
     if (res.status === 200) {
       alert("Product successfully removed");
       setShowDeleteModal(false);
+      getCourses();
     }
   };
 
   const updateHandler = async (e, newCoursesDetail) => {
     e.preventDefault();
-    console.log(newCoursesDetail);
+
     const res = await fetch(`http://localhost:3000/api/courses/${id}`, {
       method: "PUT",
       headers: {
@@ -34,6 +35,7 @@ const CoursesItem = ({ title, image, id }) => {
     if (res.status === 200) {
       alert("Product successfully update");
       setShowEditModal(false);
+      getCourses();
     }
   };
 
