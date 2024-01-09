@@ -4,12 +4,16 @@ import connectToDB from "@/utils/db";
 export default async function handler(req, res) {
   connectToDB();
 
-  const { method } = req;
+  const { method, query } = req;
 
   if (method === "GET") {
-    const courses = await coursesModel.find({});
-
-    if (courses) {
+    if (query.q) {
+      const { q } = query;
+      const regex = new RegExp(q, 'i');
+      const courses = await coursesModel.find({ title: { $regex: regex } });
+      return res.status(200).json(courses);
+    } else {
+      const courses = await coursesModel.find({});
       return res.status(200).json(courses);
     }
   } else if (method === "POST") {
